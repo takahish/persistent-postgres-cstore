@@ -1,0 +1,6 @@
+[submodule "lib/postgres"]
+	path = lib/postgres
+	url = https://github.com/docker-library/postgres.git
+[submodule "lib/cstore_fdw"]
+	path = lib/cstore_fdw
+	url = https://github.com/citusdata/cstore_fdw.git
