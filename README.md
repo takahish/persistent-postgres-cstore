@@ -1,13 +1,16 @@
-# postgres-persistence
-Docker image and container of PostgreSQL with volume, and extension which implements a columnar store.
+# persistent-postgres-cstore
+
+Docker image and container of PostgreSQL with volume to persist data. Persitent data aim to inclease research reproductivity. In particular, using the docker image in some research, a researcher can access raw and preprocessed data that is used another researcher, so reserach reproductivity will increase in the project.
+
+In addition, data that is used in research is large, so postgres is extended to columner store that is implemented by [Citus Data](#https://github.com/citusdata/cstore_fdw).
 
 ## Build image
 
 ```sh
 # Clone this repository.
-$ git clone https://github.com/takahish/postgres-persistence.git
+$ git clone https://github.com/takahish/persistent-postgres-cstore.git
 
-$ cd postgres-persistence
+$ cd persistent-postgres-cstore
 
 # Update submodules.
 $ git submodule update --init --recursive
@@ -15,20 +18,20 @@ $ git submodule update --init --recursive
 # Patch to docker-library/postgres/11/Dockerfile.
 $ patch -u postgres/lib/postgres/11/Dockerfile < postgres/patch/postgres_11_Dockerfile.patch
 
-# Build postgres-persistence image.
-$ sudo docker build -t postgres-persistence:0.1 postgres/lib/postgres/11
+# Build persistent-postgres image.
+$ sudo docker build -t persistent-postgres:0.1 postgres/lib/postgres/11
 
 # Build postgres-persistnece-cstore image (This image has columner store).
-$ sudo docker build -t postgres-persistence-cstore:0.1 postgres
+$ sudo docker build -t persistent-postgres-cstore:0.1 postgres
 ```
 
 ## Run container
 
 ```sh
 # Detach posgres-persistence-cstore.
-$ sudo docker run --name dwh -p 5432:5432 -e POSTGRES_USER=dwhuser -d postgres-persistence-cstore:0.1
+$ sudo docker run --name dwh -p 5432:5432 -e POSTGRES_USER=dwhuser -d persistent-postgres-cstore:0.1
 
-# Connect postgres-persistence-cstore.
+# Connect persistent-postgres-cstore.
 # Prerequisite is to install postgresql for using psql.
 $ psql -h localhost -U dwhuser -d dwhuser
 psql (10.8 (Ubuntu 10.8-0ubuntu0.18.04.1), server 11.3 (Debian 11.3-1.pgdg90+1))
@@ -58,10 +61,10 @@ $ psql -h localhost -U dwhuser -d dwhuser
 psql (10.8 (Ubuntu 10.8-0ubuntu0.18.04.1), server 11.3 (Debian 11.3-1.pgdg90+1))
 Type "help" for help.
 
-dwhuser=# \copy customer_reviews from '/path/to/works/postgres-persistence/customer_reviews_1998.csv' with csv
+dwhuser=# \copy customer_reviews from '/path/to/persistent-postgres-cstore/customer_reviews_1998.csv' with csv
 COPY 589859
 
-dwhuser=# \copy customer_reviews from '/home/takahiro/works/postgres-persistence/customer_reviews_1999.csv' with csv
+dwhuser=# \copy customer_reviews from '/home/takahiro/persistent-postgres-cstore/customer_reviews_1999.csv' with csv
 COPY 1172645
 
 dwhuser=# ANALYZE customer_reviews;
@@ -127,7 +130,7 @@ $ psql -h localhost -U dwhuser -d dwhuser -f test/dml/take_correlation_customer_
 
 ## Correction points
 
-- To upload postgres-persistence and postgres-persistence-cstore images to docker hub.
+- To upload persistent-postgres and persistent-postgres-cstore images to docker hub.
 - To write code for manipulating docker container for cross-platform.
     - src/build_imapge.py: build docker images.
     - src/run_container.py: restore container from images and run it.
