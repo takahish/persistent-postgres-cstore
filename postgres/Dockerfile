@@ -1,7 +1,7 @@
 # PostreSQL version is 11 (stable at 2019/06/17).
 # postgres-persistence that is patched make thier data persistent.
 # See also, lib/postgres and patch/postgres_11_Dockerfile.patch
-FROM postgres-persistence:0.1
+FROM persistent-postgres:0.1
 
 LABEL maintainer "Takahiro Ishikawa <takahish.nil@gmail.com>"
 
