@@ -1,10 +1,29 @@
 # persistent-postgres-cstore
 
-Docker image and container of PostgreSQL with volume to persist data. Persitent data aim to inclease research reproductivity. In particular, using the docker image in some research, a researcher can access raw and preprocessed data that is used another researcher, so reserach reproductivity will increase in the project.
+A docker image and container of PostgreSQL with volume to persist data. Persitent data aim to inclease research reproductivity. In particular, using the docker image in a research, a researcher can access raw and preprocessed data that is used other researchers, so the reserach reproductivity will increase in the project.
 
-In addition, data that is used in research is large, so postgres is extended to columner store that is implemented by [Citus Data](#https://github.com/citusdata/cstore_fdw).
+In addition, data that is used in the research is large so that postgres is extended to columner store that is implemented by [Citus Data](#https://github.com/citusdata/cstore_fdw).
 
-## Build image
+## Table of content
+
+- [ETL processe](#ETL-processe)
+    - [A sample of etl processes](#A-sample-of-ETL-processes)
+- [Manually bulding steps](#Manually-bulding-steps)
+    - [Build image](#Build-image)
+    - [Run container](#Run-container)
+    - [Load data](#Load-data)
+    - [Commit container to persist data](#Commit-container-to-persist-data)
+- [Correction points](#Correction-points)
+
+## ETL processe
+
+### A sample of ETL processes
+
+- https://github.com/takahish/persistent-postgres-cstore/blob/master/etl_processes.ipynb
+
+## Manually bulding steps
+
+### Build image
 
 ```sh
 # Clone this repository.
@@ -25,7 +44,7 @@ $ sudo docker build -t persistent-postgres:0.1 postgres/lib/postgres/11
 $ sudo docker build -t persistent-postgres-cstore:0.1 postgres
 ```
 
-## Run container
+### Run container
 
 ```sh
 # Detach posgres-persistence-cstore.
@@ -43,11 +62,11 @@ Did not find any relations.
 dwhuser=# \q
 ```
 
-## Load data
+### Load data
 
 ```sh
 # Download sample data.
-$ ./test/data/download_sample.sh
+$ ./download_customer_reviews.sh
 
 # Difine tables.
 $ psql -h localhost -U dwhuser -d dwhuser -f test/ddl/create_customer_reviews.sql
@@ -93,7 +112,7 @@ $ psql -h localhost -U dwhuser -d dwhuser -f test/dml/take_correlation_customer_
                    6 |           4.40 | 116412
 (6 rows)
 ```
-## Commit container, **Data Persistence**
+### Commit container to persist data
 
 ```sh
 # Commit container to image with data
