@@ -1,6 +1,6 @@
---- postgres/lib/postgres/11/Dockerfile	2019-07-04 23:38:29.000000000 +0900
-+++ postgres/lib/postgres/11/Dockerfile.modifided	2019-07-04 23:40:07.000000000 +0900
-@@ -166,7 +166,7 @@ ENV PATH $PATH:/usr/lib/postgresql/$PG_M
+--- postgres/lib/postgres/11/Dockerfile	2019-08-09 16:54:46.000000000 +0900
++++ postgres/lib/postgres/11/Dockerfile.m	2019-08-09 16:56:25.000000000 +0900
+@@ -166,7 +166,7 @@
  ENV PGDATA /var/lib/postgresql/data
  # this 777 will be replaced by 700 at runtime (allows semi-arbitrary "--user" values)
  RUN mkdir -p "$PGDATA" && chown -R postgres:postgres "$PGDATA" && chmod 777 "$PGDATA"
